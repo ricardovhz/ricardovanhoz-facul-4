@@ -34,8 +34,8 @@ public class MySql {
         try {
             Driver drv;
             drv = (Driver) Class.forName(sql.driverJDBC).newInstance();
-            Connection conn = drv.connect(sql.dataBase, null);
-            conn.close();
+            Connection conn2 = drv.connect(sql.dataBase, null);
+            conn2.close();
             System.out.println("Certo!");
 
         } catch (IllegalAccessException | ClassNotFoundException | InstantiationException | SQLException ex) {
