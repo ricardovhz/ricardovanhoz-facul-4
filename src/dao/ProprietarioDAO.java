@@ -4,7 +4,7 @@
  */
 package dao;
 
-import java.sql.Connection;
+import bancodados.BancoDados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,10 +19,10 @@ import modelo.Proprietario;
  */
 public class ProprietarioDAO {
 
-    private Connection conn;
+    private BancoDados banco;
 
-    public ProprietarioDAO(Connection conn) {
-        this.conn = conn;
+    public ProprietarioDAO(BancoDados banco) {
+        this.banco = banco;
     }
 
     public List<Proprietario> getProprietarios() {
@@ -30,7 +30,7 @@ public class ProprietarioDAO {
         List<Proprietario> result = new ArrayList<Proprietario>();
 
         try {
-            Statement st = conn.createStatement();
+            Statement st = banco.getConn().createStatement();
             ResultSet rs = st.executeQuery("select * from proprietario");
 
             while (rs.next()) {
@@ -44,9 +44,25 @@ public class ProprietarioDAO {
         return result;
     }
 
+    public int findIdByNome(String nome) {
+        final String sql = "select codigo from proprietario where nome = ?";
+
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement(sql);
+            st.setString(1, nome);
+            ResultSet rs = st.executeQuery();
+            if (rs.first()) {
+                return rs.getInt("codigo");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public void insertProprietario(Proprietario proprietario) {
         try {
-            PreparedStatement st = conn.prepareStatement("insert into proprietario values (?,?,?,?,?,?)");
+            PreparedStatement st = banco.getConn().prepareStatement("insert into proprietario values (?,?,?,?,?,?)");
             st.setInt(1, getNextId());
             st.setString(2, proprietario.getNome());
             st.setInt(3, proprietario.getEndId());
@@ -60,10 +76,10 @@ public class ProprietarioDAO {
     }
 
     public int getNextId() throws SQLException {
-        Statement st = conn.createStatement();
+        Statement st = banco.getConn().createStatement();
         ResultSet rs = st.executeQuery("select max(codigo) from proprietario");
         if (rs.first()) {
-            return rs.getInt(1);
+            return rs.getInt(1) + 1;
         } else {
             return 0;
         }
@@ -76,7 +92,7 @@ public class ProprietarioDAO {
         pro.setNome(rs.getString("nome"));
         pro.setEndId(rs.getInt("end_id"));
         pro.setNumero(rs.getInt("numero"));
-        pro.setTel(rs.getString("tel"));
+        pro.setTel(rs.getString("telefone"));
         pro.setEmail(rs.getString("email"));
 
         return pro;

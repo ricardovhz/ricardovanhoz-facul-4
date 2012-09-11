@@ -5,22 +5,21 @@
 package view;
 
 import bancodados.BancoDados;
-import dao.ProprietarioDAO;
+import dao.VeiculoDAO;
 import java.util.List;
-import javax.swing.table.TableModel;
-import modelo.Proprietario;
-import modelo.TableModelProprietario;
+import modelo.TableModelVeiculo;
+import modelo.Veiculo;
 import util.FormUtil;
 
 /**
  *
  * @author Administrador
  */
-public class CadastroProprietario extends javax.swing.JFrame {
+public class CadastroVeiculos extends javax.swing.JFrame {
 
     private BancoDados banco;
-    private ProprietarioDAO dao;
-    private TableModelProprietario tableModelProprietario;
+    private VeiculoDAO dao;
+    private TableModelVeiculo tableModelVeiculo;
 
     public BancoDados getBanco() {
         return banco;
@@ -33,21 +32,21 @@ public class CadastroProprietario extends javax.swing.JFrame {
     /**
      * Creates new form CadastroProprietario
      */
-    public CadastroProprietario() {
+    public CadastroVeiculos() {
         initComponents();
         FormUtil.centraliza(this);
-        tableModelProprietario = new TableModelProprietario();
-        jTable1.setModel(tableModelProprietario);
+        tableModelVeiculo = new TableModelVeiculo();
+        jTable1.setModel(tableModelVeiculo);
     }
 
     public void setarDAO() {
-        this.dao = new ProprietarioDAO(banco);
+        this.dao = new VeiculoDAO(banco);
         updateTable();
     }
 
     public void updateTable() {
-        List<Proprietario> props = dao.getProprietarios();
-        tableModelProprietario.setLinhas(props);
+        List<Veiculo> veiculos = dao.getVeiculos();
+        tableModelVeiculo.setLinhas(veiculos);
     }
 
     /**
@@ -111,10 +110,10 @@ public class CadastroProprietario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIncluirActionPerformed
-        CadastroDialogProprietario cad = new CadastroDialogProprietario(this, true);
+        CadastroDialogVeiculo cad = new CadastroDialogVeiculo(this, true);
         cad.setVisible(true);
         if (cad.isOk()) {
-            dao.insertProprietario(cad.getProprietario());
+            dao.insertVeiculo(cad.getVeiculo());
             updateTable();
         }
     }//GEN-LAST:event_buttonIncluirActionPerformed
@@ -136,26 +135,30 @@ public class CadastroProprietario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroVeiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroVeiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroVeiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroVeiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroProprietario().setVisible(true);
+                new CadastroVeiculos().setVisible(true);
             }
         });
     }
 
-    public TableModel getTableModelProprietario() {
-        return this.tableModelProprietario;
+    public TableModelVeiculo getTableModelVeiculo() {
+        return tableModelVeiculo;
+    }
+
+    public void setTableModelVeiculo(TableModelVeiculo tableModelVeiculo) {
+        this.tableModelVeiculo = tableModelVeiculo;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonIncluir;

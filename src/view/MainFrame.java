@@ -4,29 +4,35 @@
  */
 package view;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import bancodados.BancoDados;
+import bancodados.MySql;
+import util.FormUtil;
 
 /**
  *
  * @author Administrador
  */
 public class MainFrame extends javax.swing.JFrame {
-    
+
+    private BancoDados banco;
+
+    public BancoDados getBanco() {
+        return banco;
+    }
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        centraliza(this);
+        FormUtil.centraliza(this);
+        iniciaBanco();
     }
     
-    public void centraliza(Frame frame) {
-        Dimension df = frame.getSize();
-        Dimension ds = frame.getToolkit().getScreenSize();
-        
-        frame.setLocation((ds.width-df.width)/2, (ds.height-df.height)/2);
+    public void iniciaBanco() {
+        banco = new MySql();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,6 +46,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         menuProprietario = new javax.swing.JMenuItem();
+        menuVeiculo = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuSair = new javax.swing.JMenuItem();
 
@@ -54,6 +61,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(menuProprietario);
+
+        menuVeiculo.setText("Veículo");
+        menuVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuVeiculoActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuVeiculo);
         menuCadastro.add(jSeparator1);
 
         menuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
@@ -90,8 +105,20 @@ public class MainFrame extends javax.swing.JFrame {
     private void menuProprietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProprietarioActionPerformed
         // TODO add your handling code here:
         CadastroProprietario prop = new CadastroProprietario();
+        prop.setBanco(banco);
+        prop.setarDAO();
+        FormUtil.centraliza(prop);
         prop.setVisible(true);
     }//GEN-LAST:event_menuProprietarioActionPerformed
+
+    private void menuVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuVeiculoActionPerformed
+        // TODO add your handling code here:
+        CadastroVeiculos veic = new CadastroVeiculos();
+        veic.setBanco(banco);
+        veic.setarDAO();
+        FormUtil.centraliza(veic);
+        veic.setVisible(true);
+    }//GEN-LAST:event_menuVeiculoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -133,5 +160,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenuItem menuProprietario;
     private javax.swing.JMenuItem menuSair;
+    private javax.swing.JMenuItem menuVeiculo;
     // End of variables declaration//GEN-END:variables
 }

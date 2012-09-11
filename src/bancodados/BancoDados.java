@@ -4,16 +4,40 @@
  */
 package bancodados;
 
+import java.sql.Connection;
+import java.sql.Statement;
+
 /**
  *
  * @author 808012
  */
-public class BancoDados {
+public abstract class BancoDados {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    private String driverJDBC;
+    private String dataBase;
+    private Connection conn;
+
+    public String getDriverJDBC() {
+        return driverJDBC;
+    }
+
+    public void setDriverJDBC(String driverJDBC) {
+        this.driverJDBC = driverJDBC;
+    }
+
+    public String getDataBase() {
+        return dataBase;
+    }
+
+    public void setDataBase(String dataBase) {
+        this.dataBase = dataBase;
+    }
+
+    public Connection getConn() {
+        return conn;
+    }
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
     }
 }
