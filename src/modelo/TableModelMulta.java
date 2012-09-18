@@ -12,33 +12,33 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Administrador
  */
-public class TableModelVeiculo extends AbstractTableModel {
+public class TableModelMulta extends AbstractTableModel {
 
-    private List<Veiculo> linhas;
-    String[] columns = new String[]{"Id", "Descrição", "Chassi", "CodProprietario"};
+    private List<Multa> linhas;
+    String[] columns = new String[]{"Proprietario", "Veiculo", "Data", "Pontuação","Tipo"};
 
-    public List<Veiculo> getLinhas() {
+    public List<Multa> getLinhas() {
         return linhas;
     }
 
-    public void setLinhas(List<Veiculo> linhas) {
+    public void setLinhas(List<Multa> linhas) {
         this.linhas = linhas;
         fireTableDataChanged();
     }
 
-    public TableModelVeiculo() {
+    public TableModelMulta() {
         super();
-        linhas = new ArrayList<Veiculo>();
+        linhas = new ArrayList<Multa>();
     }
 
-    public TableModelVeiculo(List linhas) {
+    public TableModelMulta(List linhas) {
         super();
         this.linhas = linhas;
     }
 
-    public void add(Veiculo veiculo) {
-        if (veiculo != null) {
-            linhas.add(veiculo);
+    public void add(Multa multa) {
+        if (multa != null) {
+            linhas.add(multa);
             fireTableDataChanged();
         }
     }
@@ -65,16 +65,18 @@ public class TableModelVeiculo extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (linhas != null && linhas.size() >= rowIndex) {
-            Veiculo tmp = linhas.get(rowIndex);
+            Multa tmp = linhas.get(rowIndex);
             switch (columnIndex) {
                 case 0:
-                    return tmp.getCodigo();
-                case 1:
-                    return tmp.getDescricao();
-                case 2:
-                    return tmp.getChassi();
-                case 3:
                     return tmp.getProprietario().getNome();
+                case 1:
+                    return tmp.getVeiculo().getDescricao();
+                case 2:
+                    return tmp.getData();
+                case 3:
+                    return tmp.getPontuacao();
+                case 4:
+                    return tmp.getTipo().name();
             }
         }
         return null;

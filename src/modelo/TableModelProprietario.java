@@ -61,6 +61,8 @@ public class TableModelProprietario extends AbstractTableModel {
     public String getColumnName(int column) {
         return columns[column];
     }
+    
+    
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {

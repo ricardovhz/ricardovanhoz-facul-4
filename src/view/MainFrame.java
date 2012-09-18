@@ -47,6 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
         menuCadastro = new javax.swing.JMenu();
         menuProprietario = new javax.swing.JMenuItem();
         menuVeiculo = new javax.swing.JMenuItem();
+        menuMulta = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuSair = new javax.swing.JMenuItem();
 
@@ -69,6 +70,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(menuVeiculo);
+
+        menuMulta.setText("Multa");
+        menuMulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMultaActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuMulta);
         menuCadastro.add(jSeparator1);
 
         menuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
@@ -120,6 +129,15 @@ public class MainFrame extends javax.swing.JFrame {
         veic.setVisible(true);
     }//GEN-LAST:event_menuVeiculoActionPerformed
 
+    private void menuMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMultaActionPerformed
+        CadastroMulta multa = new CadastroMulta();
+        multa.setBanco(banco);
+        multa.setarDAO();
+        FormUtil.centraliza(multa);
+        multa.setVisible(true);
+        
+    }//GEN-LAST:event_menuMultaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -158,6 +176,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menuCadastro;
+    private javax.swing.JMenuItem menuMulta;
     private javax.swing.JMenuItem menuProprietario;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenuItem menuVeiculo;

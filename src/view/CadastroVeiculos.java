@@ -7,6 +7,7 @@ package view;
 import bancodados.BancoDados;
 import dao.VeiculoDAO;
 import java.util.List;
+import javax.swing.table.TableModel;
 import modelo.TableModelVeiculo;
 import modelo.Veiculo;
 import util.FormUtil;
@@ -36,7 +37,7 @@ public class CadastroVeiculos extends javax.swing.JFrame {
         initComponents();
         FormUtil.centraliza(this);
         tableModelVeiculo = new TableModelVeiculo();
-        jTable1.setModel(tableModelVeiculo);
+        tableVeiculos.setModel(tableModelVeiculo);
     }
 
     public void setarDAO() {
@@ -60,8 +61,9 @@ public class CadastroVeiculos extends javax.swing.JFrame {
 
         jToolBar1 = new javax.swing.JToolBar();
         buttonIncluir = new javax.swing.JButton();
+        buttonExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableVeiculos = new javax.swing.JTable();
 
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -78,7 +80,18 @@ public class CadastroVeiculos extends javax.swing.JFrame {
         });
         jToolBar1.add(buttonIncluir);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        buttonExcluir.setText("Excluir");
+        buttonExcluir.setFocusable(false);
+        buttonExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonExcluir);
+
+        tableVeiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -86,7 +99,7 @@ public class CadastroVeiculos extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableVeiculos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,6 +130,17 @@ public class CadastroVeiculos extends javax.swing.JFrame {
             updateTable();
         }
     }//GEN-LAST:event_buttonIncluirActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        // TODO add your handling code here:
+        TableModel tm = tableVeiculos.getModel();
+        int selectedRow = tableVeiculos.getSelectedRow();
+        if (selectedRow != -1) {
+            int codigoVeiculo = (Integer) tm.getValueAt(selectedRow, 0);
+            dao.deleteVeiculo(codigoVeiculo);
+            updateTable();
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,9 +185,10 @@ public class CadastroVeiculos extends javax.swing.JFrame {
         this.tableModelVeiculo = tableModelVeiculo;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonIncluir;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable tableVeiculos;
     // End of variables declaration//GEN-END:variables
 }

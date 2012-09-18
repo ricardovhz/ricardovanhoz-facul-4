@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Proprietario;
 
 /**
@@ -59,6 +61,22 @@ public class ProprietarioDAO {
         }
         return -1;
     }
+    
+    public Proprietario findById(int id) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select * from proprietario where codigo=?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next())
+                return fillProprietario(rs);
+            else 
+                return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProprietarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+    }
 
     public void insertProprietario(Proprietario proprietario) {
         try {
@@ -72,6 +90,16 @@ public class ProprietarioDAO {
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteProprietario(int id) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("delete from proprietario where codigo=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProprietarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

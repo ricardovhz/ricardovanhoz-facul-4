@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import modelo.Proprietario;
 import modelo.Veiculo;
 
 /**
@@ -20,9 +23,11 @@ import modelo.Veiculo;
 public class VeiculoDAO {
 
     private BancoDados banco;
+    private ProprietarioDAO dao;
 
     public VeiculoDAO(BancoDados banco) {
         this.banco = banco;
+        dao = new ProprietarioDAO(banco);
     }
 
     public List<Veiculo> getVeiculos() {
@@ -50,11 +55,22 @@ public class VeiculoDAO {
             st.setInt(1, getNextId());
             st.setString(2, veiculo.getDescricao());
             st.setDouble(3, veiculo.getChassi());
-            st.setInt(4, veiculo.getCodpro());
+            st.setInt(4, veiculo.getProprietario().getCodigo());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void deleteVeiculo(int id) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("delete from veiculo where codigo=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     public int getNextId() throws SQLException {
@@ -73,8 +89,25 @@ public class VeiculoDAO {
         vei.setCodigo(rs.getInt("codigo"));
         vei.setDescricao(rs.getString("descr"));
         vei.setChassi(rs.getDouble("chassi"));
-        vei.setCodpro(rs.getInt("codpro"));
+        vei.setProprietario(getProprietarioFromId(rs.getInt("codpro")));
 
         return vei;
+    }
+    
+    private Proprietario getProprietarioFromId(int id) {
+        return dao.findById(id);
+    }
+    
+    public Veiculo findById(int id) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select * from veiculo where codigo=?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next())
+                return fillVeiculo(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

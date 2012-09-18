@@ -13,7 +13,7 @@ public class Veiculo {
     int codigo;
     String descricao;
     double chassi;
-    int codpro;
+    Proprietario proprietario;
 
     public Veiculo() {
     }
@@ -42,11 +42,11 @@ public class Veiculo {
         this.chassi = chassi;
     }
 
-    public int getCodpro() {
-        return codpro;
+    public Proprietario getProprietario() {
+        return proprietario;
     }
 
-    public void setCodpro(int codpro) {
-        this.codpro = codpro;
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
     }
 }
