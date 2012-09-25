@@ -2,29 +2,26 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.proprietario;
 
 import bancodados.BancoDados;
-import dao.MultaDAO;
 import dao.ProprietarioDAO;
-import dao.VeiculoDAO;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.table.TableModel;
-import modelo.Multa;
-import modelo.TableModelMulta;
+import modelo.Proprietario;
+import tablemodel.TableModelProprietario;
 import util.FormUtil;
 
 /**
  *
  * @author Administrador
  */
-public class CadastroMulta extends javax.swing.JFrame {
+public class CadastroProprietario extends JFrame {
 
     private BancoDados banco;
-    private MultaDAO dao;
-    private ProprietarioDAO daoProprietario;
-    private VeiculoDAO daoVeiculo;
-    private TableModelMulta tableModelMulta;
+    private ProprietarioDAO dao;
+    private TableModelProprietario tableModelProprietario;
 
     public BancoDados getBanco() {
         return banco;
@@ -37,23 +34,21 @@ public class CadastroMulta extends javax.swing.JFrame {
     /**
      * Creates new form CadastroProprietario
      */
-    public CadastroMulta() {
+    public CadastroProprietario() {
         initComponents();
         FormUtil.centraliza(this);
-        tableModelMulta = new TableModelMulta();
-        jTable1.setModel(tableModelMulta);
+        tableModelProprietario = new TableModelProprietario();
+        tableProprietario.setModel(tableModelProprietario);
     }
 
     public void setarDAO() {
-        this.dao = new MultaDAO(banco);
-        this.daoProprietario = new ProprietarioDAO(banco);
-        this.daoVeiculo = new VeiculoDAO(banco);
+        this.dao = new ProprietarioDAO(banco);
         updateTable();
     }
 
     public void updateTable() {
-        List<Multa> multas = dao.getMultas();
-        tableModelMulta.setLinhas(multas);
+        List<Proprietario> props = dao.getProprietarios();
+        tableModelProprietario.setLinhas(props);
     }
 
     /**
@@ -67,8 +62,9 @@ public class CadastroMulta extends javax.swing.JFrame {
 
         jToolBar1 = new javax.swing.JToolBar();
         buttonIncluir = new javax.swing.JButton();
+        buttonExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableProprietario = new javax.swing.JTable();
 
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -85,7 +81,18 @@ public class CadastroMulta extends javax.swing.JFrame {
         });
         jToolBar1.add(buttonIncluir);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        buttonExcluir.setText("Excluir");
+        buttonExcluir.setFocusable(false);
+        buttonExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonExcluir);
+
+        tableProprietario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -93,7 +100,7 @@ public class CadastroMulta extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableProprietario);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,7 +108,7 @@ public class CadastroMulta extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(390, Short.MAX_VALUE))
+                .addContainerGap(353, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -117,15 +124,24 @@ public class CadastroMulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIncluirActionPerformed
-        CadastroDialogMulta cad = new CadastroDialogMulta(this, true);
-        cad.setDaoProprietario(daoProprietario);
-        cad.setDaoVeiculo(daoVeiculo);
+        CadastroDialogProprietario cad = new CadastroDialogProprietario(this, true);
         cad.setVisible(true);
         if (cad.isOk()) {
-            dao.insertMulta(cad.getMulta());
+            dao.insertProprietario(cad.getProprietario());
             updateTable();
         }
     }//GEN-LAST:event_buttonIncluirActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        int selectedRow = tableProprietario.getSelectedRow();
+        TableModel tm = tableProprietario.getModel();
+        
+        if (selectedRow != -1) {
+            Integer codigoSelectedProp = (Integer) tm.getValueAt(selectedRow, 0);
+            dao.deleteProprietario(codigoSelectedProp);
+            updateTable();
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,31 +160,32 @@ public class CadastroMulta extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroMulta().setVisible(true);
+                new CadastroProprietario().setVisible(true);
             }
         });
     }
 
     public TableModel getTableModelProprietario() {
-        return this.tableModelMulta;
+        return this.tableModelProprietario;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonIncluir;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable tableProprietario;
     // End of variables declaration//GEN-END:variables
 }

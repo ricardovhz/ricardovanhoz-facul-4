@@ -80,13 +80,14 @@ public class ProprietarioDAO {
 
     public void insertProprietario(Proprietario proprietario) {
         try {
-            PreparedStatement st = banco.getConn().prepareStatement("insert into proprietario values (?,?,?,?,?,?)");
+            PreparedStatement st = banco.getConn().prepareStatement("insert into proprietario (codigo,nome,identidade,codlog,numero,telefone,email) values (?,?,?,?,?,?,?)");
             st.setInt(1, getNextId());
             st.setString(2, proprietario.getNome());
-            st.setInt(3, proprietario.getEndId());
-            st.setInt(4, proprietario.getNumero());
-            st.setString(5, proprietario.getTel());
-            st.setString(6, proprietario.getEmail());
+            st.setString(3, proprietario.getIdentidade());
+            st.setInt(4, proprietario.getEndId());
+            st.setInt(5, proprietario.getNumero());
+            st.setString(6, proprietario.getTel());
+            st.setString(7, proprietario.getEmail());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +110,7 @@ public class ProprietarioDAO {
         if (rs.first()) {
             return rs.getInt(1) + 1;
         } else {
-            return 0;
+            return 1;
         }
     }
 
@@ -118,7 +119,8 @@ public class ProprietarioDAO {
 
         pro.setCodigo(rs.getInt("codigo"));
         pro.setNome(rs.getString("nome"));
-        pro.setEndId(rs.getInt("end_id"));
+        pro.setIdentidade(rs.getString("identidade"));
+        pro.setEndId(rs.getInt("codlog"));
         pro.setNumero(rs.getInt("numero"));
         pro.setTel(rs.getString("telefone"));
         pro.setEmail(rs.getString("email"));

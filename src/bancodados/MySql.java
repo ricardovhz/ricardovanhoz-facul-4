@@ -19,7 +19,7 @@ public class MySql extends BancoDados {
 
     public MySql() {
         setDriverJDBC("com.mysql.jdbc.Driver");
-        setDataBase("jdbc:mysql://localhost/test");
+        setDataBase("jdbc:mysql://localhost/gtransito");
         setConn(initConn());
     }
 

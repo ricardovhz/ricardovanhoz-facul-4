@@ -2,26 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.multa;
 
 import bancodados.BancoDados;
+import dao.MultaDAO;
 import dao.ProprietarioDAO;
+import dao.VeiculoDAO;
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import modelo.Proprietario;
-import modelo.TableModelProprietario;
+import modelo.Multa;
+import tablemodel.TableModelMulta;
 import util.FormUtil;
 
 /**
  *
  * @author Administrador
  */
-public class CadastroProprietario extends javax.swing.JFrame {
+public class CadastroMulta extends javax.swing.JFrame {
 
     private BancoDados banco;
-    private ProprietarioDAO dao;
-    private TableModelProprietario tableModelProprietario;
+    private MultaDAO dao;
+    private ProprietarioDAO daoProprietario;
+    private VeiculoDAO daoVeiculo;
+    private TableModelMulta tableModelMulta;
 
     public BancoDados getBanco() {
         return banco;
@@ -34,21 +37,23 @@ public class CadastroProprietario extends javax.swing.JFrame {
     /**
      * Creates new form CadastroProprietario
      */
-    public CadastroProprietario() {
+    public CadastroMulta() {
         initComponents();
         FormUtil.centraliza(this);
-        tableModelProprietario = new TableModelProprietario();
-        tableProprietario.setModel(tableModelProprietario);
+        tableModelMulta = new TableModelMulta();
+        tableMultas.setModel(tableModelMulta);
     }
 
     public void setarDAO() {
-        this.dao = new ProprietarioDAO(banco);
+        this.dao = new MultaDAO(banco);
+        this.daoProprietario = new ProprietarioDAO(banco);
+        this.daoVeiculo = new VeiculoDAO(banco);
         updateTable();
     }
 
     public void updateTable() {
-        List<Proprietario> props = dao.getProprietarios();
-        tableModelProprietario.setLinhas(props);
+        List<Multa> multas = dao.getMultas();
+        tableModelMulta.setLinhas(multas);
     }
 
     /**
@@ -64,7 +69,7 @@ public class CadastroProprietario extends javax.swing.JFrame {
         buttonIncluir = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableProprietario = new javax.swing.JTable();
+        tableMultas = new javax.swing.JTable();
 
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -92,7 +97,7 @@ public class CadastroProprietario extends javax.swing.JFrame {
         });
         jToolBar1.add(buttonExcluir);
 
-        tableProprietario.setModel(new javax.swing.table.DefaultTableModel(
+        tableMultas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -100,7 +105,7 @@ public class CadastroProprietario extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(tableProprietario);
+        jScrollPane1.setViewportView(tableMultas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,23 +129,23 @@ public class CadastroProprietario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIncluirActionPerformed
-        CadastroDialogProprietario cad = new CadastroDialogProprietario(this, true);
+        CadastroDialogMulta cad = new CadastroDialogMulta(this, true);
+        cad.setDaoProprietario(daoProprietario);
+        cad.setDaoVeiculo(daoVeiculo);
         cad.setVisible(true);
         if (cad.isOk()) {
-            dao.insertProprietario(cad.getProprietario());
+            dao.insertMulta(cad.getMulta());
             updateTable();
         }
     }//GEN-LAST:event_buttonIncluirActionPerformed
 
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
-        int selectedRow = tableProprietario.getSelectedRow();
-        TableModel tm = tableProprietario.getModel();
+        int selRow = tableMultas.getSelectedRow();
         
-        if (selectedRow != -1) {
-            Integer codigoSelectedProp = (Integer) tm.getValueAt(selectedRow, 0);
-            dao.deleteProprietario(codigoSelectedProp);
-            updateTable();
-        }
+        int codpro = daoProprietario.findIdByNome((String)tableModelMulta.getValueAt(selRow, 0));
+        int codvei = daoVeiculo.findIdByDescricao((String)tableModelMulta.getValueAt(selRow, 1));
+        dao.deleteMulta(codpro,codvei);
+        updateTable();
     }//GEN-LAST:event_buttonExcluirActionPerformed
 
     /**
@@ -160,32 +165,32 @@ public class CadastroProprietario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroProprietario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroProprietario().setVisible(true);
+                new CadastroMulta().setVisible(true);
             }
         });
     }
 
     public TableModel getTableModelProprietario() {
-        return this.tableModelProprietario;
+        return this.tableModelMulta;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonIncluir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTable tableProprietario;
+    private javax.swing.JTable tableMultas;
     // End of variables declaration//GEN-END:variables
 }

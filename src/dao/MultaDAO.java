@@ -64,6 +64,17 @@ public class MultaDAO {
             e.printStackTrace();
         }
     }
+    
+    public void deleteMulta(int codpro,int codvei) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("delete from multa where codpro=? and codvei=?");
+            st.setInt(1, codpro);
+            st.setInt(2, codvei);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Multa fillMulta(ResultSet rs) throws SQLException {
         Multa multa = new Multa();

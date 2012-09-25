@@ -11,6 +11,7 @@ package modelo;
 public class Proprietario {
 
     private int codigo;
+    private String identidade;
     private int endId;
     private int numero;
     private String nome;
@@ -63,5 +64,13 @@ public class Proprietario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getIdentidade() {
+        return identidade;
+    }
+
+    public void setIdentidade(String identidade) {
+        this.identidade = identidade;
     }
 }

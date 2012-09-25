@@ -4,9 +4,12 @@
  */
 package view;
 
+import view.multa.CadastroMulta;
+import view.veiculo.CadastroVeiculos;
 import bancodados.BancoDados;
 import bancodados.MySql;
 import util.FormUtil;
+import view.proprietario.CadastroProprietario;
 
 /**
  *

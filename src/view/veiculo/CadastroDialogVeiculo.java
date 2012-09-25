@@ -2,12 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.veiculo;
 
+import bancodados.BancoDados;
 import dao.ProprietarioDAO;
-import dao.VeiculoDAO;
 import java.util.List;
-import modelo.Multa;
 import modelo.Proprietario;
 import modelo.Veiculo;
 import util.FormUtil;
@@ -16,78 +15,42 @@ import util.FormUtil;
  *
  * @author Administrador
  */
-public class CadastroDialogMulta extends javax.swing.JDialog {
+public class CadastroDialogVeiculo extends javax.swing.JDialog {
 
-    private Multa multa = new Multa();
+    private Veiculo veiculo = new Veiculo();
     private boolean ok;
-    private ProprietarioDAO daoProprietario;
-    private VeiculoDAO daoVeiculo;
+    private CadastroVeiculos parent;
+    ProprietarioDAO dao;
 
     /**
      * Creates new form CadastroDialog
      */
-    public CadastroDialogMulta(java.awt.Frame parent, boolean modal) {
+    public CadastroDialogVeiculo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        if (parent instanceof CadastroVeiculos) {
+            this.parent = (CadastroVeiculos) parent;
+        }
         initComponents();
         FormUtil.centraliza(this);
-        fillCombos();
+        init();
     }
-
-    public void fillCombos() {
-        fillComboProprietarios();
-        fillComboVeiculos();
-        fillComboTipos();
-    }
-
-    public void fillComboProprietarios() {
+    
+    public void init() {
+        BancoDados banco = parent.getBanco();
+        dao = new ProprietarioDAO(banco);
+        List<Proprietario> proprietarios = dao.getProprietarios();
         comboProprietarios.removeAllItems();
-        List<Proprietario> props = daoProprietario.getProprietarios();
-        if (props != null) {
-            for (Proprietario p : props) {
-                comboProprietarios.addItem(p);
-            }
+        for (Proprietario p : proprietarios) {
+            comboProprietarios.addItem(p.getNome());
         }
     }
 
-    public void fillComboVeiculos() {
-        comboVeiculos.removeAllItems();
-        List<Veiculo> vei = daoVeiculo.getVeiculos();
-        if (vei != null) {
-            for (Veiculo v : vei) {
-                comboVeiculos.addItem(v);
-            }
-        }
+    public Veiculo getVeiculo() {
+        return veiculo;
     }
 
-    public void fillComboTipos() {
-        comboTipos.removeAllItems();
-        for (Multa.tipoPontuacao tipo : Multa.tipoPontuacao.values()) {
-            comboTipos.addItem(tipo.name());
-        }
-    }
-
-    public ProprietarioDAO getDaoProprietario() {
-        return daoProprietario;
-    }
-
-    public void setDaoProprietario(ProprietarioDAO daoProprietario) {
-        this.daoProprietario = daoProprietario;
-    }
-
-    public VeiculoDAO getDaoVeiculo() {
-        return daoVeiculo;
-    }
-
-    public void setDaoVeiculo(VeiculoDAO daoVeiculo) {
-        this.daoVeiculo = daoVeiculo;
-    }
-
-    public Multa getMulta() {
-        return multa;
-    }
-
-    public void setMulta(Multa multa) {
-        this.multa = multa;
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
     }
 
     public boolean isOk() {
@@ -108,18 +71,14 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
     private void initComponents() {
 
         jFrame1 = new javax.swing.JFrame();
-        txtProprietario = new javax.swing.JLabel();
-        txtVeiculo = new javax.swing.JLabel();
-        txtData = new javax.swing.JLabel();
-        txtPontuacao = new javax.swing.JLabel();
-        txtTipo = new javax.swing.JLabel();
-        txtNumero = new javax.swing.JTextField();
-        txtTelefone = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtDescricao = new javax.swing.JTextField();
+        txtChassi = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         comboProprietarios = new javax.swing.JComboBox();
-        comboVeiculos = new javax.swing.JComboBox();
-        comboTipos = new javax.swing.JComboBox();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,15 +93,11 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        txtProprietario.setText("Proprietario");
+        jLabel1.setText("Descrição");
 
-        txtVeiculo.setText("Veiculo");
+        jLabel2.setText("Chassi");
 
-        txtData.setText("Data");
-
-        txtPontuacao.setText("Pontuação");
-
-        txtTipo.setText("Tipo");
+        jLabel3.setText("CodPro");
 
         jButton1.setText("Ok");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -160,10 +115,6 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
 
         comboProprietarios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        comboVeiculos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        comboTipos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,31 +123,21 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtData)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNumero))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtPontuacao)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTelefone))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtProprietario)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboProprietarios, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtVeiculo)
-                        .addGap(41, 41, 41)
-                        .addComponent(comboVeiculos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(127, 127, 127)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)
                         .addGap(0, 115, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtTipo)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
                         .addGap(18, 18, 18)
-                        .addComponent(comboTipos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtChassi)
+                            .addComponent(txtDescricao)
+                            .addComponent(comboProprietarios, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,25 +145,17 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtProprietario)
+                    .addComponent(jLabel1)
+                    .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtChassi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
                     .addComponent(comboProprietarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtVeiculo)
-                    .addComponent(comboVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtData)
-                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPontuacao)
-                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTipo)
-                    .addComponent(comboTipos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -233,7 +166,9 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //TODO: implementar adição da multa
+        veiculo.setDescricao(txtDescricao.getText());
+        veiculo.setChassi(Double.parseDouble(txtChassi.getText()));
+        veiculo.setProprietario(dao.findById(dao.findIdByNome((String)comboProprietarios.getSelectedItem())));
         setOk(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -259,20 +194,20 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroDialogMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroDialogVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroDialogMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroDialogVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroDialogMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroDialogVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroDialogMulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroDialogVeiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CadastroDialogMulta dialog = new CadastroDialogMulta(new javax.swing.JFrame(), true);
+                CadastroDialogVeiculo dialog = new CadastroDialogVeiculo(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -285,17 +220,13 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox comboProprietarios;
-    private javax.swing.JComboBox comboTipos;
-    private javax.swing.JComboBox comboVeiculos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JFrame jFrame1;
-    private javax.swing.JLabel txtData;
-    private javax.swing.JTextField txtNumero;
-    private javax.swing.JLabel txtPontuacao;
-    private javax.swing.JLabel txtProprietario;
-    private javax.swing.JTextField txtTelefone;
-    private javax.swing.JLabel txtTipo;
-    private javax.swing.JLabel txtVeiculo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField txtChassi;
+    private javax.swing.JTextField txtDescricao;
     // End of variables declaration//GEN-END:variables
 }

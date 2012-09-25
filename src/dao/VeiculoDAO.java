@@ -61,7 +61,7 @@ public class VeiculoDAO {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteVeiculo(int id) {
         try {
             PreparedStatement st = banco.getConn().prepareStatement("delete from veiculo where codigo=?");
@@ -70,14 +70,14 @@ public class VeiculoDAO {
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     public int getNextId() throws SQLException {
         Statement st = banco.getConn().createStatement();
         ResultSet rs = st.executeQuery("select max(codigo) from veiculo");
         if (rs.first()) {
-            return rs.getInt(1)+1;
+            return rs.getInt(1) + 1;
         } else {
             return 0;
         }
@@ -93,21 +93,51 @@ public class VeiculoDAO {
 
         return vei;
     }
-    
+
     private Proprietario getProprietarioFromId(int id) {
         return dao.findById(id);
     }
-    
+
     public Veiculo findById(int id) {
         try {
             PreparedStatement st = banco.getConn().prepareStatement("select * from veiculo where codigo=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            if (rs.next())
+            if (rs.next()) {
                 return fillVeiculo(rs);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+
+    public Veiculo findByDescricao(String descricao) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select * from veiculo where descr=?");
+            st.setString(1, descricao);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return fillVeiculo(rs);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public int findIdByDescricao(String descricao) {
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select codigo from veiculo where descr=?");
+            st.setString(1, descricao);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("codigo");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
 }
