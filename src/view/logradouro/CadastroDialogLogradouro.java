@@ -184,12 +184,12 @@ public class CadastroDialogLogradouro extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        proprietario.setNome(txtNome.getText());
-        proprietario.setIdentidade(txtIdentidade.getText());
-        proprietario.setEndId(Integer.parseInt(txtEndereco.getText()));
-        proprietario.setNumero(Integer.parseInt(txtNumero.getText()));
-        proprietario.setTel(txtTelefone.getText());
-        proprietario.setEmail(txtEmail.getText());
+//        proprietario.setNome(txtNome.getText());
+//        proprietario.setIdentidade(txtIdentidade.getText());
+//        proprietario.setEndId(Integer.parseInt(txtEndereco.getText()));
+//        proprietario.setNumero(Integer.parseInt(txtNumero.getText()));
+//        proprietario.setTel(txtTelefone.getText());
+//        proprietario.setEmail(txtEmail.getText());
         setOk(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
