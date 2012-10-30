@@ -21,10 +21,12 @@ import modelo.Proprietario;
  */
 public class ProprietarioDAO {
 
+    private LogradouroDAO dao;
     private BancoDados banco;
 
     public ProprietarioDAO(BancoDados banco) {
         this.banco = banco;
+        dao = new LogradouroDAO(banco);
     }
 
     public List<Proprietario> getProprietarios() {
@@ -84,7 +86,7 @@ public class ProprietarioDAO {
             st.setInt(1, getNextId());
             st.setString(2, proprietario.getNome());
             st.setString(3, proprietario.getIdentidade());
-            st.setInt(4, proprietario.getEndId());
+            st.setInt(4, proprietario.getEndereco().getCodlog());
             st.setInt(5, proprietario.getNumero());
             st.setString(6, proprietario.getTel());
             st.setString(7, proprietario.getEmail());
@@ -120,7 +122,7 @@ public class ProprietarioDAO {
         pro.setCodigo(rs.getInt("codigo"));
         pro.setNome(rs.getString("nome"));
         pro.setIdentidade(rs.getString("identidade"));
-        pro.setEndId(rs.getInt("codlog"));
+        pro.setEndereco(dao.findById(rs.getInt("codlog")));
         pro.setNumero(rs.getInt("numero"));
         pro.setTel(rs.getString("telefone"));
         pro.setEmail(rs.getString("email"));

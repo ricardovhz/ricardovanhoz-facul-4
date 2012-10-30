@@ -13,7 +13,7 @@ import modelo.Proprietario;
 public class TableModelProprietario extends AbstractTableModel<Proprietario> {
 
     public TableModelProprietario() {
-        super(new String[]{"Id", "Nome", "Identidade", "Endereco", "Numero", "Telefone", "Email"});
+        super(new String[]{"Id", "Nome", "Identidade", "Numero", "Telefone", "Email"});
     }
 
     @Override
@@ -28,12 +28,10 @@ public class TableModelProprietario extends AbstractTableModel<Proprietario> {
                 case 2:
                     return tmp.getIdentidade();
                 case 3:
-                    return tmp.getEndId();
-                case 4:
                     return tmp.getNumero();
-                case 5:
+                case 4:
                     return tmp.getTel();
-                case 6:
+                case 5:
                     return tmp.getEmail();
             }
         }

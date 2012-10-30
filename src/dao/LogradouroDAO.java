@@ -29,7 +29,7 @@ public class LogradouroDAO {
 
     public List<Logradouro> getLogradouros() {
 
-        List<Logradouro> result = new ArrayList<Logradouro>();
+        List<Logradouro> result = new ArrayList<>();
 
         try {
             Statement st = banco.getConn().createStatement();

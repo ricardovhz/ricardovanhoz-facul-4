@@ -12,7 +12,7 @@ public class Proprietario {
 
     private int codigo;
     private String identidade;
-    private int endId;
+    private Logradouro endereco;
     private int numero;
     private String nome;
     private String tel;
@@ -34,12 +34,12 @@ public class Proprietario {
         this.nome = nome;
     }
 
-    public int getEndId() {
-        return endId;
+    public Logradouro getEndereco() {
+        return endereco;
     }
 
-    public void setEndId(int endId) {
-        this.endId = endId;
+    public void setEndereco(Logradouro endereco) {
+        this.endereco = endereco;
     }
 
     public int getNumero() {

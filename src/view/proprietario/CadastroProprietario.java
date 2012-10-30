@@ -124,7 +124,7 @@ public class CadastroProprietario extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIncluirActionPerformed
-        CadastroDialogProprietario cad = new CadastroDialogProprietario(this, true);
+        CadastroDialogProprietario cad = new CadastroDialogProprietario(this, true, banco);
         cad.setVisible(true);
         if (cad.isOk()) {
             dao.insertProprietario(cad.getProprietario());
