@@ -51,11 +51,12 @@ public class VeiculoDAO {
 
     public void insertVeiculo(Veiculo veiculo) {
         try {
-            PreparedStatement st = banco.getConn().prepareStatement("insert into veiculo values (?,?,?,?)");
+            PreparedStatement st = banco.getConn().prepareStatement("insert into veiculo (codigo,descr,placa,chassi,codpro) values (?,?,?,?,?)");
             st.setInt(1, getNextId());
             st.setString(2, veiculo.getDescricao());
-            st.setDouble(3, veiculo.getChassi());
-            st.setInt(4, veiculo.getProprietario().getCodigo());
+            st.setString(3, veiculo.getChassi());
+            st.setString(4, veiculo.getPlaca());
+            st.setInt(5, veiculo.getProprietario().getCodigo());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,7 +89,8 @@ public class VeiculoDAO {
 
         vei.setCodigo(rs.getInt("codigo"));
         vei.setDescricao(rs.getString("descr"));
-        vei.setChassi(rs.getDouble("chassi"));
+        vei.setChassi(rs.getString("chassi"));
+        vei.setPlaca(rs.getString("placa"));
         vei.setProprietario(getProprietarioFromId(rs.getInt("codpro")));
 
         return vei;

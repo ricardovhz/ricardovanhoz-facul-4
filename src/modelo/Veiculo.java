@@ -12,7 +12,8 @@ public class Veiculo {
 
     int codigo;
     String descricao;
-    double chassi;
+    String chassi;
+    String placa;
     Proprietario proprietario;
 
     public Veiculo() {
@@ -34,11 +35,11 @@ public class Veiculo {
         this.descricao = descricao;
     }
 
-    public double getChassi() {
+    public String getChassi() {
         return chassi;
     }
 
-    public void setChassi(double chassi) {
+    public void setChassi(String chassi) {
         this.chassi = chassi;
     }
 
@@ -48,5 +49,13 @@ public class Veiculo {
 
     public void setProprietario(Proprietario proprietario) {
         this.proprietario = proprietario;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 }

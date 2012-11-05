@@ -38,7 +38,7 @@ public class MultaDAO {
 
         try {
             Statement st = banco.getConn().createStatement();
-            ResultSet rs = st.executeQuery("select * from multa");
+            ResultSet rs = st.executeQuery("select codigo,codpro,codvei,data,pontuacao,tipo from multa");
 
             while (rs.next()) {
                 result.add(fillMulta(rs));
@@ -53,23 +53,23 @@ public class MultaDAO {
 
     public void insertMulta(Multa multa) {
         try {
-            PreparedStatement st = banco.getConn().prepareStatement("insert into multa values (?,?,?,?,?)");
-            st.setInt(1, multa.getProprietario().getCodigo());
-            st.setInt(2, multa.getVeiculo().getCodigo());
-            st.setDate(3, new Date(multa.getData().getTime()));
-            st.setInt(4, multa.getPontuacao());
-            st.setString(5, multa.getTipo().name());
+            PreparedStatement st = banco.getConn().prepareStatement("insert into multa (codigo,codpro,codvei,data,pontuacao,tipo) values (?,?,?,?,?,?)");
+            st.setInt(1, getNextId());
+            st.setInt(2, multa.getProprietario().getCodigo());
+            st.setInt(3, multa.getVeiculo().getCodigo());
+            st.setDate(4, new Date(multa.getData().getTime()));
+            st.setInt(5, multa.getPontuacao());
+            st.setString(6, multa.getTipo().name());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     
-    public void deleteMulta(int codpro,int codvei) {
+    public void deleteMulta(int codigo) {
         try {
-            PreparedStatement st = banco.getConn().prepareStatement("delete from multa where codpro=? and codvei=?");
-            st.setInt(1, codpro);
-            st.setInt(2, codvei);
+            PreparedStatement st = banco.getConn().prepareStatement("delete from multa where codigo=?");
+            st.setInt(1, codigo);
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,11 +79,12 @@ public class MultaDAO {
     public Multa fillMulta(ResultSet rs) throws SQLException {
         Multa multa = new Multa();
 
-        multa.setProprietario(getProprietarioFromId(rs.getInt(1)));
-        multa.setVeiculo(getVeiculoFromId(rs.getInt(2)));
-        multa.setData(rs.getDate(3));
-        multa.setPontuacao(rs.getInt(4));
-        multa.setTipo(Multa.tipoPontuacao.valueOf(rs.getString(5)));
+        multa.setCodigo(rs.getInt(1));
+        multa.setProprietario(getProprietarioFromId(rs.getInt(2)));
+        multa.setVeiculo(getVeiculoFromId(rs.getInt(3)));
+        multa.setData(rs.getDate(4));
+        multa.setPontuacao(rs.getInt(5));
+        multa.setTipo(Multa.tipoPontuacao.valueOf(rs.getString(6)));
         return multa;
     }
 
@@ -94,4 +95,15 @@ public class MultaDAO {
     private Veiculo getVeiculoFromId(int id) {
         return daoVeiculo.findById(id);
     }
+
+    public int getNextId() throws SQLException {
+        Statement st = banco.getConn().createStatement();
+        ResultSet rs = st.executeQuery("select max(codigo) from multa");
+        if (rs.first()) {
+            return rs.getInt(1) + 1;
+        } else {
+            return 1;
+        }
+    }
+
 }

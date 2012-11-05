@@ -13,7 +13,7 @@ import modelo.Multa;
 public class TableModelMulta extends AbstractTableModel<Multa> {
 
     public TableModelMulta() {
-        super(new String[]{"Proprietario", "Veiculo", "Data", "Pontuação","Tipo"});
+        super(new String[]{"Código", "Proprietario", "Veiculo", "Data", "Pontuação","Tipo"});
     }
 
     @Override
@@ -22,14 +22,16 @@ public class TableModelMulta extends AbstractTableModel<Multa> {
             Multa tmp = linhas.get(rowIndex);
             switch (columnIndex) {
                 case 0:
-                    return tmp.getProprietario().getNome();
+                    return tmp.getCodigo();
                 case 1:
-                    return tmp.getVeiculo().getDescricao();
+                    return tmp.getProprietario().getNome();
                 case 2:
-                    return tmp.getData();
+                    return tmp.getVeiculo().getDescricao();
                 case 3:
-                    return tmp.getPontuacao();
+                    return tmp.getData();
                 case 4:
+                    return tmp.getPontuacao();
+                case 5:
                     return tmp.getTipo().name();
             }
         }

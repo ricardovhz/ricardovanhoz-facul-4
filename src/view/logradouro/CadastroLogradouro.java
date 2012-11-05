@@ -6,6 +6,7 @@ package view.logradouro;
 
 import bancodados.BancoDados;
 import dao.LogradouroDAO;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.util.List;
 import javax.swing.JDialog;
@@ -30,8 +31,8 @@ public class CadastroLogradouro extends JDialog {
         return logradouro;
     }
 
-    public CadastroLogradouro(Frame owner, boolean modal, BancoDados banco) {
-        super(owner, modal);
+    public CadastroLogradouro(JDialog owner, boolean modal, BancoDados banco) {
+        super(owner,modal);
         initComponents();
         FormUtil.centraliza(this);
         this.banco = banco;
@@ -39,7 +40,7 @@ public class CadastroLogradouro extends JDialog {
         tableLogradouro.setModel(tableModelLogradouro);
         setarDAO();
     }
-    
+
     public void setarDAO() {
         this.dao = new LogradouroDAO(banco);
         updateTable();
@@ -63,6 +64,9 @@ public class CadastroLogradouro extends JDialog {
         tableLogradouro = new javax.swing.JTable();
         brnCancelar = new javax.swing.JButton();
         btnOk = new javax.swing.JButton();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnIncluir = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
 
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -95,22 +99,52 @@ public class CadastroLogradouro extends JDialog {
             }
         });
 
+        jToolBar1.setRollover(true);
+
+        btnIncluir.setText("Incluir");
+        btnIncluir.setFocusable(false);
+        btnIncluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnIncluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnIncluir);
+
+        btnExcluir.setText("Excluir");
+        btnExcluir.setFocusable(false);
+        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnExcluir);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(162, Short.MAX_VALUE)
                 .addComponent(btnOk)
                 .addGap(18, 18, 18)
                 .addComponent(brnCancelar)
                 .addGap(138, 138, 138))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
@@ -148,10 +182,38 @@ public class CadastroLogradouro extends JDialog {
             saveLogradouroAndDispose();
         }
     }//GEN-LAST:event_btnOkActionPerformed
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        IncluirLogradouroDialog dlg = new IncluirLogradouroDialog(this, true);
+        dlg.setVisible(true);
+        if (dlg.getLogradouro() != null) {
+            Logradouro l = dlg.getLogradouro();
+            dao.insertLogradouro(l);
+            updateTable();
+        }
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (tableLogradouro.getSelectedRow() != -1) {
+            int result = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este objeto?", "Confirmação", JOptionPane.YES_NO_OPTION);
+            switch (result) {
+                case 0:
+                    int row = tableLogradouro.getSelectedRow();
+                    dao.deleteLogradouro((Integer) tableModelLogradouro.getValueAt(row, 0));
+                    updateTable();
+                case 1:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton brnCancelar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnOk;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tableLogradouro;
     // End of variables declaration//GEN-END:variables
 }

@@ -301,7 +301,7 @@ public class CadastroDialogProprietario extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarActionPerformed
-        CadastroLogradouro cad = new CadastroLogradouro(null,true,banco);
+        CadastroLogradouro cad = new CadastroLogradouro(this,true,banco);
         cad.setVisible(true);
         if (cad.getLogradouro() != null) {
             fillEndereco(cad.getLogradouro());

@@ -13,7 +13,7 @@ import modelo.Veiculo;
 public class TableModelVeiculo extends AbstractTableModel<Veiculo> {
 
     public TableModelVeiculo() {
-        super(new String[]{"Id", "Descrição", "Chassi", "CodProprietario"});
+        super(new String[]{"Id", "Descrição", "Chassi", "Placa", "CodProprietario"});
     }
 
     @Override
@@ -28,6 +28,8 @@ public class TableModelVeiculo extends AbstractTableModel<Veiculo> {
                 case 2:
                     return tmp.getChassi();
                 case 3:
+                    return tmp.getPlaca();
+                case 4:
                     return tmp.getProprietario().getNome();
             }
         }

@@ -73,7 +73,7 @@ public class LogradouroDAO {
 
     public int getNextId() throws SQLException {
         Statement st = banco.getConn().createStatement();
-        ResultSet rs = st.executeQuery("select max(codigo) from logradouro");
+        ResultSet rs = st.executeQuery("select max(codlog) from logradouro");
         if (rs.first()) {
             return rs.getInt(1) + 1;
         } else {

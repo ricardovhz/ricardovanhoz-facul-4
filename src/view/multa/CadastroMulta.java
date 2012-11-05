@@ -142,9 +142,7 @@ public class CadastroMulta extends javax.swing.JFrame {
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
         int selRow = tableMultas.getSelectedRow();
         
-        int codpro = daoProprietario.findIdByNome((String)tableModelMulta.getValueAt(selRow, 0));
-        int codvei = daoVeiculo.findIdByDescricao((String)tableModelMulta.getValueAt(selRow, 1));
-        dao.deleteMulta(codpro,codvei);
+        dao.deleteMulta((Integer) tableModelMulta.getValueAt(selRow, 0));
         updateTable();
     }//GEN-LAST:event_buttonExcluirActionPerformed
 

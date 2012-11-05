@@ -20,11 +20,20 @@ public class Multa {
         GRAVISSIMA,
         MEDIA
     }
+    private int codigo;
     private Date data;
     private int pontuacao;
     private tipoPontuacao tipo;
     private Proprietario proprietario;
     private Veiculo veiculo;
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
 
     public Date getData() {
         return data;
