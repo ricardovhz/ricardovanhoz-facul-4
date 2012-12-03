@@ -2,16 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package bancodados;
+package bancodados.jdbc;
 
+import bancodados.IBanco;
 import java.sql.Connection;
-import java.sql.Statement;
 
 /**
  *
  * @author 808012
  */
-public abstract class BancoDados {
+public abstract class BancoDados implements IBanco {
 
     private String driverJDBC;
     private String dataBase;

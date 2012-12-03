@@ -4,8 +4,13 @@
  */
 package view.veiculo;
 
-import bancodados.BancoDados;
+import bancodados.IBanco;
+import bancodados.jdbc.BancoDados;
+import bancodados.server.IServer;
+import dao.DAOFactory;
 import dao.VeiculoDAO;
+import dao.jdbc.JDBCVeiculoDAO;
+import dao.server.ServerVeiculoDAO;
 import java.util.List;
 import javax.swing.table.TableModel;
 import tablemodel.TableModelVeiculo;
@@ -18,15 +23,15 @@ import util.FormUtil;
  */
 public class CadastroVeiculos extends javax.swing.JFrame {
 
-    private BancoDados banco;
+    private IBanco banco;
     private VeiculoDAO dao;
     private TableModelVeiculo tableModelVeiculo;
 
-    public BancoDados getBanco() {
+    public IBanco getBanco() {
         return banco;
     }
 
-    public void setBanco(BancoDados banco) {
+    public void setBanco(IBanco banco) {
         this.banco = banco;
     }
 
@@ -41,7 +46,7 @@ public class CadastroVeiculos extends javax.swing.JFrame {
     }
 
     public void setarDAO() {
-        this.dao = new VeiculoDAO(banco);
+        this.dao = DAOFactory.getVeiculoDAO(banco);
         updateTable();
     }
 

@@ -4,10 +4,10 @@
  */
 package view;
 
+import bancodados.IBanco;
+import bancodados.server.ServerImpl;
 import view.multa.CadastroMulta;
 import view.veiculo.CadastroVeiculos;
-import bancodados.BancoDados;
-import bancodados.MySql;
 import util.FormUtil;
 import view.proprietario.CadastroProprietario;
 
@@ -17,9 +17,9 @@ import view.proprietario.CadastroProprietario;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private BancoDados banco;
+    private IBanco banco;
 
-    public BancoDados getBanco() {
+    public IBanco getBanco() {
         return banco;
     }
 
@@ -31,11 +31,10 @@ public class MainFrame extends javax.swing.JFrame {
         FormUtil.centraliza(this);
         iniciaBanco();
     }
-    
-    public void iniciaBanco() {
-        banco = new MySql();
-    }
 
+    public void iniciaBanco() {
+        banco = new ServerImpl();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -138,7 +137,7 @@ public class MainFrame extends javax.swing.JFrame {
         multa.setarDAO();
         FormUtil.centraliza(multa);
         multa.setVisible(true);
-        
+
     }//GEN-LAST:event_menuMultaActionPerformed
 
     /**

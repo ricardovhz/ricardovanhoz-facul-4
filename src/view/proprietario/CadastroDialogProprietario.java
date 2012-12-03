@@ -4,7 +4,8 @@
  */
 package view.proprietario;
 
-import bancodados.BancoDados;
+import bancodados.IBanco;
+import bancodados.server.IServer;
 import javax.swing.JOptionPane;
 import modelo.Logradouro;
 import modelo.Proprietario;
@@ -20,12 +21,12 @@ public class CadastroDialogProprietario extends javax.swing.JDialog {
     private Proprietario proprietario = new Proprietario();
     private Logradouro logradouroSelecionado;
     private boolean ok;
-    private BancoDados banco;
+    private IBanco banco;
 
     /**
      * Creates new form CadastroDialog
      */
-    public CadastroDialogProprietario(java.awt.Frame parent, boolean modal, BancoDados banco) {
+    public CadastroDialogProprietario(java.awt.Frame parent, boolean modal, IBanco banco) {
         super(parent, modal);
         initComponents();
         FormUtil.centraliza(this);
@@ -301,7 +302,7 @@ public class CadastroDialogProprietario extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarActionPerformed
-        CadastroLogradouro cad = new CadastroLogradouro(this,true,banco);
+        CadastroLogradouro cad = new CadastroLogradouro(this, true, banco);
         cad.setVisible(true);
         if (cad.getLogradouro() != null) {
             fillEndereco(cad.getLogradouro());
@@ -315,7 +316,6 @@ public class CadastroDialogProprietario extends javax.swing.JDialog {
         txtCidade.setText(logradouro.getCidade());
         txtCEP.setText(logradouro.getCep());
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnProcurar;
     private javax.swing.JButton jButton1;

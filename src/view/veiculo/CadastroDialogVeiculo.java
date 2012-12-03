@@ -4,8 +4,12 @@
  */
 package view.veiculo;
 
-import bancodados.BancoDados;
+import bancodados.IBanco;
+import bancodados.server.IServer;
+import dao.DAOFactory;
 import dao.ProprietarioDAO;
+import dao.jdbc.JDBCProprietarioDAO;
+import dao.server.ServerProprietarioDAO;
 import java.util.List;
 import modelo.Proprietario;
 import modelo.Veiculo;
@@ -36,8 +40,8 @@ public class CadastroDialogVeiculo extends javax.swing.JDialog {
     }
     
     public void init() {
-        BancoDados banco = parent.getBanco();
-        dao = new ProprietarioDAO(banco);
+        IBanco banco = parent.getBanco();
+        dao = DAOFactory.getProprietarioDAO(banco);
         List<Proprietario> proprietarios = dao.getProprietarios();
         comboProprietarios.removeAllItems();
         for (Proprietario p : proprietarios) {
@@ -180,6 +184,7 @@ public class CadastroDialogVeiculo extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         veiculo.setDescricao(txtDescricao.getText());
         veiculo.setChassi(txtChassi.getText());
+        veiculo.setPlaca(txtPlaca.getText());
         veiculo.setProprietario(dao.findById(dao.findIdByNome((String)comboProprietarios.getSelectedItem())));
         setOk(true);
         this.setVisible(false);

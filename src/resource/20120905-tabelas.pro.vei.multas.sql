@@ -30,4 +30,11 @@ CREATE TABLE multa (
   FOREIGN KEY (codvei) REFERENCES veiculo     (codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE logradouro (
+  codlog int(05) primary key,
+  descr  varchar(40),
+  bairro varchar(40),
+  cep    varchar(8),
+  cidade varchar(30)
+);
 

@@ -4,10 +4,16 @@
  */
 package view.multa;
 
-import bancodados.BancoDados;
+import bancodados.IBanco;
+import bancodados.jdbc.BancoDados;
+import bancodados.server.IServer;
+import dao.DAOFactory;
 import dao.MultaDAO;
 import dao.ProprietarioDAO;
 import dao.VeiculoDAO;
+import dao.jdbc.JDBCMultaDAO;
+import dao.jdbc.JDBCProprietarioDAO;
+import dao.jdbc.JDBCVeiculoDAO;
 import java.util.List;
 import javax.swing.table.TableModel;
 import modelo.Multa;
@@ -20,17 +26,18 @@ import util.FormUtil;
  */
 public class CadastroMulta extends javax.swing.JFrame {
 
-    private BancoDados banco;
+    private IBanco banco;
+    private IServer server;
     private MultaDAO dao;
     private ProprietarioDAO daoProprietario;
     private VeiculoDAO daoVeiculo;
     private TableModelMulta tableModelMulta;
 
-    public BancoDados getBanco() {
+    public IBanco getBanco() {
         return banco;
     }
 
-    public void setBanco(BancoDados banco) {
+    public void setBanco(IBanco banco) {
         this.banco = banco;
     }
 
@@ -45,9 +52,9 @@ public class CadastroMulta extends javax.swing.JFrame {
     }
 
     public void setarDAO() {
-        this.dao = new MultaDAO(banco);
-        this.daoProprietario = new ProprietarioDAO(banco);
-        this.daoVeiculo = new VeiculoDAO(banco);
+        this.dao = DAOFactory.getMultaDAO(banco);
+        this.daoProprietario = DAOFactory.getProprietarioDAO(banco);
+        this.daoVeiculo = DAOFactory.getVeiculoDAO(banco);
         updateTable();
     }
 
@@ -141,7 +148,7 @@ public class CadastroMulta extends javax.swing.JFrame {
 
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
         int selRow = tableMultas.getSelectedRow();
-        
+
         dao.deleteMulta((Integer) tableModelMulta.getValueAt(selRow, 0));
         updateTable();
     }//GEN-LAST:event_buttonExcluirActionPerformed

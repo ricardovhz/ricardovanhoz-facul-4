@@ -4,13 +4,11 @@
  */
 package view.logradouro;
 
-import bancodados.BancoDados;
+import bancodados.IBanco;
+import dao.DAOFactory;
 import dao.LogradouroDAO;
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelo.Logradouro;
 import tablemodel.TableModelLogradouro;
@@ -24,14 +22,14 @@ public class CadastroLogradouro extends JDialog {
 
     private Logradouro logradouro;
     private LogradouroDAO dao;
-    private BancoDados banco;
+    private IBanco banco;
     private TableModelLogradouro tableModelLogradouro;
 
     public Logradouro getLogradouro() {
         return logradouro;
     }
 
-    public CadastroLogradouro(JDialog owner, boolean modal, BancoDados banco) {
+    public CadastroLogradouro(JDialog owner, boolean modal, IBanco banco) {
         super(owner,modal);
         initComponents();
         FormUtil.centraliza(this);
@@ -42,7 +40,7 @@ public class CadastroLogradouro extends JDialog {
     }
 
     public void setarDAO() {
-        this.dao = new LogradouroDAO(banco);
+        this.dao = DAOFactory.getLogradouroDAO(banco);
         updateTable();
     }
 

@@ -4,8 +4,13 @@
  */
 package view.proprietario;
 
-import bancodados.BancoDados;
+import bancodados.IBanco;
+import bancodados.jdbc.BancoDados;
+import bancodados.server.IServer;
+import dao.DAOFactory;
 import dao.ProprietarioDAO;
+import dao.jdbc.JDBCProprietarioDAO;
+import dao.server.ServerProprietarioDAO;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.TableModel;
@@ -19,15 +24,15 @@ import util.FormUtil;
  */
 public class CadastroProprietario extends JFrame {
 
-    private BancoDados banco;
+    private IBanco banco;
     private ProprietarioDAO dao;
     private TableModelProprietario tableModelProprietario;
 
-    public BancoDados getBanco() {
+    public IBanco getBanco() {
         return banco;
     }
 
-    public void setBanco(BancoDados banco) {
+    public void setBanco(IBanco banco) {
         this.banco = banco;
     }
 
@@ -42,7 +47,7 @@ public class CadastroProprietario extends JFrame {
     }
 
     public void setarDAO() {
-        this.dao = new ProprietarioDAO(banco);
+        this.dao = DAOFactory.getProprietarioDAO(banco);
         updateTable();
     }
 
@@ -135,7 +140,7 @@ public class CadastroProprietario extends JFrame {
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
         int selectedRow = tableProprietario.getSelectedRow();
         TableModel tm = tableProprietario.getModel();
-        
+
         if (selectedRow != -1) {
             Integer codigoSelectedProp = (Integer) tm.getValueAt(selectedRow, 0);
             dao.deleteProprietario(codigoSelectedProp);
