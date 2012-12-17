@@ -137,4 +137,24 @@ public class JDBCProprietarioDAO implements ProprietarioDAO {
 
         return pro;
     }
+
+    @Override
+    public List<Proprietario> findAllByNome(String nome) {
+        List<Proprietario> result = new ArrayList<Proprietario>();
+
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select * from proprietario where nome like ?");
+            st.setString(1, "%"+nome+"%");
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                result.add(fillProprietario(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
+    }
 }

@@ -150,5 +150,25 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
         }
         return -1;
     }
+
+    @Override
+    public List<Veiculo> findAllByDescricao(String descricao) {
+        List<Veiculo> result = new ArrayList<Veiculo>();
+
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select * from veiculo where descr like '%?%'");
+            st.setString(1, descricao);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                result.add(fillVeiculo(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
+    }
     
 }

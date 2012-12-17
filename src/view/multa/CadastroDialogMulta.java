@@ -143,6 +143,7 @@ public class CadastroDialogMulta extends javax.swing.JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Incluir Multa");
 
         txtProprietario.setText("Proprietario");
 

@@ -113,4 +113,44 @@ public class JDBCMultaDAO implements MultaDAO {
         }
     }
 
+    @Override
+    public List<Multa> findByProprietario(String nomeProprietario) {
+
+        List<Multa> result = new ArrayList<>();
+
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select m.codigo,m.codpro,m.codvei,m.data,m.pontuacao,m.tipo from multa m, proprietario p where m.codpro=p.codigo and p.nome like ?");
+            st.setString(1, "%"+nomeProprietario+"%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(fillMulta(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<Multa> findByVeiculo(String descricaoVeiculo) {
+
+        List<Multa> result = new ArrayList<>();
+
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select m.codigo,m.codpro,m.codvei,m.data,m.pontuacao,m.tipo from multa m, veiculo v where m.codvei=v.codigo and v.descr like ?");
+            st.setString(1, "%"+descricaoVeiculo+"%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(fillMulta(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return result;
+    }
+
 }

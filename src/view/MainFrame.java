@@ -5,7 +5,8 @@
 package view;
 
 import bancodados.IBanco;
-import bancodados.server.ServerImpl;
+import bancodados.jdbc.thread.ThreadBanco;
+import java.awt.Frame;
 import view.multa.CadastroMulta;
 import view.veiculo.CadastroVeiculos;
 import util.FormUtil;
@@ -30,10 +31,11 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         FormUtil.centraliza(this);
         iniciaBanco();
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
 
     public void iniciaBanco() {
-        banco = new ServerImpl();
+        banco = new ThreadBanco();
     }
 
     /**
@@ -45,6 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         menuProprietario = new javax.swing.JMenuItem();
@@ -54,6 +57,7 @@ public class MainFrame extends javax.swing.JFrame {
         menuSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("gTransito");
 
         menuCadastro.setText("Cadastro");
 
@@ -99,11 +103,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
         );
 
         pack();
@@ -175,6 +179,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menuCadastro;

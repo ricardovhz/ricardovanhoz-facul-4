@@ -132,4 +132,14 @@ public class ServerMultaDAO extends AbstractServerDAO implements MultaDAO {
         return multa;
 
     }
+
+    @Override
+    public List<Multa> findByProprietario(String nomeProprietario) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<Multa> findByVeiculo(String descricaoVeiculo) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

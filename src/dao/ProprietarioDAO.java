@@ -14,6 +14,7 @@ import modelo.Proprietario;
  */
 public interface ProprietarioDAO {
     public List<Proprietario> getProprietarios();
+    public List<Proprietario> findAllByNome(String nome);
     public int findIdByNome(String nome);
     public Proprietario findById(int id);
     public void insertProprietario(Proprietario proprietario);

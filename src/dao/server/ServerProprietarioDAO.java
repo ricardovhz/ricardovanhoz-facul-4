@@ -153,4 +153,9 @@ public class ServerProprietarioDAO implements ProprietarioDAO {
 
         return pro;
     }
+
+    @Override
+    public List<Proprietario> findAllByNome(String nome) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

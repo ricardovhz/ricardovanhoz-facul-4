@@ -15,6 +15,7 @@ import modelo.Logradouro;
  */
 public interface LogradouroDAO {
     public List<Logradouro> getLogradouros();
+    public List<Logradouro> findByLogradouro(String logradouro);
     public void insertLogradouro(Logradouro logradouro);
     public void deleteLogradouro(int id);
     public int getNextId() throws SQLException;

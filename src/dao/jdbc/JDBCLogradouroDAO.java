@@ -113,4 +113,20 @@ public class JDBCLogradouroDAO implements LogradouroDAO {
         return null;
     }
 
+    @Override
+    public List<Logradouro> findByLogradouro(String logradouro) {
+        List<Logradouro> result = new ArrayList<>();
+        try {
+            PreparedStatement st = banco.getConn().prepareStatement("select * from logradouro where descr like ?");
+            st.setString(1, "%"+logradouro+"%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(fillLogradouro(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCLogradouroDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
 }

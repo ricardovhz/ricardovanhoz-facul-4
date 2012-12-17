@@ -16,6 +16,7 @@ import modelo.Veiculo;
  */
 public interface VeiculoDAO {
     public List<Veiculo> getVeiculos();
+    public List<Veiculo> findAllByDescricao(String descricao);
     public void insertVeiculo(Veiculo veiculo);
     public void deleteVeiculo(int id);
     public int getNextId() throws SQLException;

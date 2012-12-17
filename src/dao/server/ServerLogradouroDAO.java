@@ -124,4 +124,9 @@ public class ServerLogradouroDAO extends AbstractServerDAO implements Logradouro
 
         return log;
     }
+
+    @Override
+    public List<Logradouro> findByLogradouro(String logradouro) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

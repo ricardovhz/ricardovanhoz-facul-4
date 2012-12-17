@@ -5,15 +5,11 @@
 package view.multa;
 
 import bancodados.IBanco;
-import bancodados.jdbc.BancoDados;
 import bancodados.server.IServer;
 import dao.DAOFactory;
 import dao.MultaDAO;
 import dao.ProprietarioDAO;
 import dao.VeiculoDAO;
-import dao.jdbc.JDBCMultaDAO;
-import dao.jdbc.JDBCProprietarioDAO;
-import dao.jdbc.JDBCVeiculoDAO;
 import java.util.List;
 import javax.swing.table.TableModel;
 import modelo.Multa;
@@ -72,12 +68,21 @@ public class CadastroMulta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        radioBuscar = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
         buttonIncluir = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableMultas = new javax.swing.JTable();
+        radioProprietario = new javax.swing.JRadioButton();
+        radioVeiculo = new javax.swing.JRadioButton();
+        txtBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
 
+        radioBuscar.add(radioProprietario);
+        radioBuscar.add(radioVeiculo);
+
+        setTitle("Multas");
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
         jToolBar1.setRollover(true);
@@ -114,22 +119,54 @@ public class CadastroMulta extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tableMultas);
 
+        radioBuscar.add(radioProprietario);
+        radioProprietario.setSelected(true);
+        radioProprietario.setText("Proprietario");
+
+        radioBuscar.add(radioVeiculo);
+        radioVeiculo.setText("Veiculo");
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(353, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(radioProprietario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(radioVeiculo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscar)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioProprietario)
+                    .addComponent(radioVeiculo)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -149,9 +186,25 @@ public class CadastroMulta extends javax.swing.JFrame {
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
         int selRow = tableMultas.getSelectedRow();
 
-        dao.deleteMulta((Integer) tableModelMulta.getValueAt(selRow, 0));
-        updateTable();
+        if (selRow != -1) {
+            dao.deleteMulta((Integer) tableModelMulta.getValueAt(selRow, 0));
+            updateTable();
+        }
     }//GEN-LAST:event_buttonExcluirActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        if (txtBuscar.getText().trim().isEmpty()) {
+            updateTable();
+        } else {
+            List<Multa> multas;
+            if (radioProprietario.isSelected()) {
+                multas = dao.findByProprietario(txtBuscar.getText());
+            } else {
+                multas = dao.findByVeiculo(txtBuscar.getText());
+            }
+            tableModelMulta.setLinhas(multas);
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,10 +245,15 @@ public class CadastroMulta extends javax.swing.JFrame {
         return this.tableModelMulta;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonIncluir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.ButtonGroup radioBuscar;
+    private javax.swing.JRadioButton radioProprietario;
+    private javax.swing.JRadioButton radioVeiculo;
     private javax.swing.JTable tableMultas;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

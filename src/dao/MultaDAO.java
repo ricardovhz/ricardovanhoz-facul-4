@@ -17,6 +17,8 @@ import modelo.Veiculo;
  */
 public interface MultaDAO {
     public List<Multa> getMultas();
+    public List<Multa> findByProprietario(String nomeProprietario);
+    public List<Multa> findByVeiculo(String descricaoVeiculo);
     public void insertMulta(Multa multa);
     public void deleteMulta(int codigo);
     public Proprietario getProprietarioFromId(int id);

@@ -98,12 +98,13 @@ public class CadastroDialogVeiculo extends javax.swing.JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Incluir Veiculo");
 
         jLabel1.setText("Descrição");
 
         jLabel2.setText("Chassi");
 
-        jLabel3.setText("CodPro");
+        jLabel3.setText("Proprietário");
 
         jButton1.setText("Ok");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

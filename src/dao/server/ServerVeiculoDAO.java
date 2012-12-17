@@ -162,4 +162,9 @@ public class ServerVeiculoDAO extends AbstractServerDAO implements VeiculoDAO {
 
         return vei;
     }
+
+    @Override
+    public List<Veiculo> findAllByDescricao(String descricao) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
